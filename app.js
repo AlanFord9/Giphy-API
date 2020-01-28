@@ -38,6 +38,8 @@ function renderButtons() {
             // Creating img and div elements
             var gifDiv = $("<div>");
             var animalImage = $("<img>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
             // Applying attributes to the gif produced
             animalImage.attr("src", results[i].images.fixed_height_still.url)
             animalImage.attr("data-state", "still");
@@ -46,7 +48,8 @@ function renderButtons() {
             animalImage.attr("data-animate", results[i].images.fixed_height.url);
             animalImage.addClass("gif")
 
-            gifDiv.append(animalImage)
+            gifDiv.append(animalImage);
+            gifDiv.append(p);
 
             $("#animals-view").append(gifDiv);
             }
