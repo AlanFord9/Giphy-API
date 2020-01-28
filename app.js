@@ -1,7 +1,7 @@
 // Array to hold animal entries
 var animals = [];
 
-// Function for adding buttons
+// Function for creating new animal buttons
 function renderButtons() {
 
     // Deleting the animal buttons prior to adding new animal buttons
@@ -10,15 +10,11 @@ function renderButtons() {
     // Looping through the array of animals
     for (var i = 0; i < animals.length; i++) {
 
-      // Then dynamicaly generating buttons for each animal in the array.
+      // Generating buttons for each animal in the array.
       var a = $("<button>");
-      // Adding a class
       a.addClass("animal");
-      // Adding a data-attribute with a value of the movie at index i
       a.attr("data-name", animals[i]);
-      // Providing the button's text with a value of the movie at index i
       a.text(animals[i]);
-      // Adding the button to the HTML
       $("#buttons-view").append(a);
     }
 
@@ -33,6 +29,7 @@ function renderButtons() {
         method: "GET"
         }).then(function(response) {
             var results = response.data;
+            console.log(results);
             
             for (var i = 0; i < results.length; i++) {
 
@@ -40,29 +37,41 @@ function renderButtons() {
 
             var animalImage = $("<img>");
 
-            animalImage.attr("src", results[i].images.fixed_height.url);
+            animalImage.attr("src", results[i].images.fixed_height_still.url)
+            animalImage.attr("data-state", "still");
             animalImage.attr("alt", "animal gif");
+            animalImage.attr("data-still", results[i].images.fixed_height_still.url);
+            animalImage.attr("data-animate", results[i].images.fixed_height.url);
+            animalImage.addClass("gif")
 
             gifDiv.append(animalImage)
 
             $("#animals-view").prepend(gifDiv);
             }
+
+            $(".gif").on("click", function() {
+                // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+                var state = $(this).attr("data-state");
+                // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+                // Then, set the image's data-state to animate
+                // Else set src to the data-still value
+                if (state === "still") {
+                  $(this).attr("src", $(this).attr("data-animate"));
+                  $(this).attr("data-state", "animate");
+                } else {
+                  $(this).attr("src", $(this).attr("data-still"));
+                  $(this).attr("data-state", "still");
+                }
+              });
         });
     })
   }
 
-  // This function handles events where one button is clicked
+  // Function to push animals to array and renderButtons()
   $("#add-animal").on("click", function(event) {
-    // event.preventDefault() prevents the form from trying to submit itself.
-    // We're using a form so that the user can hit enter instead of clicking the button if they want
     event.preventDefault();
-
-    // This line will grab the text from the input box
     var animalButton = $("#animal-input").val().trim();
-    // The animal from the textbox is then added to our array
     animals.push(animalButton);
-
-    // calling renderButtons which handles the processing of our movie array
     renderButtons();
   });
 
