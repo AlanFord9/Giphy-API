@@ -11,3 +11,5 @@ Simply open the application in your web browser, begin clicking on the buttons o
 -Who maintains and contributes to the project?
 
 This project was built and is maintained by Alan Ford.
+
+Access the app here: https://alanford9.github.io/Giphy-API/
